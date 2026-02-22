@@ -1,38 +1,22 @@
-import { BRAND } from "../../config/brand";
+import testimonials from "../../data/testimonials";
 
-function VisitSection() {
+function Testimonials() {
   return (
-    <section className="visit-section" id="contact">
-      <div className="container visit-grid">
-        <div className="visit-text">
-          <h2>Visit Our Studio</h2>
-          <p>{BRAND.address}</p>
-          <p>{BRAND.email}</p>
+    <section className="testimonials">
+      <div className="container">
+        <h2 className="section-title">Client Love</h2>
 
-          <a
-            href={BRAND.mapLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-          >
-            Open in Google Maps
-          </a>
-        </div>
-
-        <div className="visit-map">
-          <iframe
-            title="map"
-            src="https://www.google.com/maps?q=Kochi&output=embed"
-            width="100%"
-            height="350"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-          ></iframe>
+        <div className="testimonial-grid">
+          {testimonials.map((item) => (
+            <div className="testimonial-card" key={item.id}>
+              <p>“{item.text}”</p>
+              <h4>— {item.name}</h4>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-export default VisitSection;
+export default Testimonials;
