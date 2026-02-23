@@ -1094,3 +1094,37 @@ h1, h2, h3 {
   }
 
 }
+
+/* =========================
+   FIX: CLEAN 2 COLUMN MOBILE PRODUCTS
+========================= */
+
+@media (max-width: 600px) {
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+
+  .product-card {
+    padding: 14px;
+  }
+
+  .product-image {
+    height: 240px;
+  }
+
+  .product-name {
+    font-size: 14px;
+  }
+
+  .product-price {
+    font-size: 14px;
+  }
+
+  .product-btn {
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+
+}
