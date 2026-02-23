@@ -26,5 +26,35 @@ export const PRODUCTS = [
     category: "Occasion",
     price: "₹55,000",
     image: "/images/p4.jpg"
+  },
+
+    {
+    id: 5,
+    name: "Silk Saree",
+    category: "Saree",
+    price: "₹35,000",
+    image: "/images/p3.jpg"
+  },
+  {
+    id: 6,
+    name: "Reception Gown",
+    category: "Occasion",
+    price: "₹55,000",
+    image: "/images/p4.jpg"
+  },
+
+    {
+    id: 7,
+    name: "Silk Saree",
+    category: "Saree",
+    price: "₹35,000",
+    image: "/images/p3.jpg"
+  },
+  {
+    id: 8,
+    name: "Reception Gown",
+    category: "Occasion",
+    price: "₹55,000",
+    image: "/images/p4.jpg"
   }
 ];
