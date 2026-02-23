@@ -3,23 +3,51 @@ import ProductCard from "../ui/ProductCard";
 import ProductModal from "../ui/ProductModal";
 import { PRODUCTS } from "../../data/products";
 
-function Products() {
+function Products({ activeCategory, searchQuery }) {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  return (
-    <section className="featured container">
-      <h2 className="section-title">Curated Pieces</h2>
+  let filteredProducts = PRODUCTS;
 
-      <div className="card-grid">
-        {PRODUCTS.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onClick={setSelectedProduct}
-          />
-        ))}
-      </div>
+  if (activeCategory) {
+    filteredProducts = filteredProducts.filter(
+      p => p.category.toLowerCase() === activeCategory.toLowerCase()
+    );
+  }
+
+  if (searchQuery) {
+    filteredProducts = filteredProducts.filter(
+      p =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  return (
+    <section className="featured container" id="products">
+      <h2 className="section-title">
+        {searchQuery
+          ? `Search Results for "${searchQuery}"`
+          : activeCategory
+          ? `${activeCategory} Collection`
+          : "Curated Pieces"}
+      </h2>
+
+      {filteredProducts.length === 0 ? (
+        <div className="empty-state">
+          <p>No products found.</p>
+        </div>
+      ) : (
+        <div className="product-grid">
+          {filteredProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onClick={setSelectedProduct}
+            />
+          ))}
+        </div>
+      )}
 
       <ProductModal
         product={selectedProduct}

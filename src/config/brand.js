@@ -6,12 +6,16 @@ export const BRAND = {
   address: "MG Road, Kochi",
   email: "hello@maisonelara.com",
   heroImage: "/images/hero.jpg",
-  mapLink: "https://maps.google.com",
+  mapLink: "https://www.google.com/maps?q=MG+Road+Kochi",
+
+  instagram: {
+    enabled: true,
+    url: "https://instagram.com/maisonelara"
+  },
 
   seo: {
     title: "Maison Elara | Bridal Boutique in Kochi",
-    description:
-      "Premium bridal and occasion wear boutique in Kochi. Explore curated collections and inquire via WhatsApp.",
+    description: "Premium bridal boutique in Kochi.",
     favicon: "/images/favicon.png"
   }
 };

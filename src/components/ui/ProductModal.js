@@ -3,7 +3,8 @@ import { BRAND } from "../../config/brand";
 function ProductModal({ product, onClose }) {
   if (!product) return null;
 
-  const productURL = `${window.location.origin}/product/${product.id}`;
+  // Better product link (works even without routing)
+  const productURL = `${window.location.origin}/?product=${product.id}`;
 
   const message = `
 Hello,
@@ -14,11 +15,7 @@ Product: ${product.name}
 Category: ${product.category}
 Price: ${product.price}
 
-Product Link:
-${productURL}
-
-Image:
-${product.image}
+View product: ${productURL}
 
 Please share more details.
 `;
