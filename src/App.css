@@ -1271,7 +1271,8 @@ h1, h2, h3 {
   display: flex;
   gap: 15px;
   margin-top: 25px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
 /* Base circular style */
@@ -1515,19 +1516,21 @@ h1, h2, h3 {
   .visit-actions {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     margin-top: 28px;
     flex-wrap: nowrap;
     align-items: center;
+    flex-shrink: 0;
   }
 
   .visit-icon {
-    width: 48px;
-    height: 48px;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
   }
 
   .visit-icon svg {
-    width: 20px;
+    width: 18px;
     height: 20px;
   }
 
@@ -2063,11 +2066,12 @@ h1, h2, h3 {
   }
 
   .visit-actions {
-    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
   }
 
   .visit-btn {
-    width: 100%;
+    width: auto;
   }
 
   .visit-map iframe {
