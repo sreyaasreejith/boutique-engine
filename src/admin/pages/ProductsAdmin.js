@@ -31,10 +31,18 @@ const [modalState, setModalState] = useState({
   productId: null
 });
 
+const [toast, setToast] = useState({
+  isVisible: false,
+  message: "",
+  type: "success"
+});
+
 const [form,setForm]=useState({
 name:"",
 price:"",
 category:"",
+description:"",
+features:[],
 image:"",
 images:[]
 });
@@ -128,6 +136,25 @@ const removeImage = (indexToRemove) => {
 };
 
 // =====================
+// SHOW TOAST NOTIFICATION
+// =====================
+
+const showToast = (message, type = "success") => {
+  setToast({
+    isVisible: true,
+    message,
+    type
+  });
+  
+  setTimeout(() => {
+    setToast(prev => ({
+      ...prev,
+      isVisible: false
+    }));
+  }, 3000);
+};
+
+// =====================
 // SET IMAGE AS PRIMARY
 // =====================
 
@@ -139,6 +166,8 @@ const setAsPrimary = (indexToSet) => {
     // Move selected image to the front
     newImages.splice(indexToSet, 1);
     newImages.unshift(primaryImage);
+    
+    showToast("Image set as primary ✓", "success");
     
     return {
       ...prev,
@@ -247,6 +276,8 @@ setForm({
 name:"",
 price:"",
 category:"",
+description:"",
+features:[],
 image:"",
 images:[]
 });
@@ -269,6 +300,8 @@ setForm({
 name:product.name,
 price:product.price,
 category:product.category,
+description:product.description || "",
+features:product.features || [],
 image:product.image,
 images: product.images || (product.image ? [product.image] : [])
 
@@ -311,6 +344,12 @@ const confirmDelete = async () => {
 return(
 
 <div>
+
+{toast.isVisible && (
+  <div className={`toast toast-${toast.type}`}>
+    {toast.message}
+  </div>
+)}
 
 <h2>Products</h2>
 
@@ -406,25 +445,26 @@ onChange={handleUpload}
         >
           <img src={imgUrl} alt={`Product ${index + 1}`} />
           
-          {index !== 0 && (
+          <div className="gallery-actions">
             <button
               type="button"
               className="set-primary-btn"
               onClick={() => setAsPrimary(index)}
-              title="Set as primary image"
+              title={index === 0 ? "Already primary" : "Set as primary image"}
+              disabled={index === 0}
             >
               ★
             </button>
-          )}
-          
-          <button
-            type="button"
-            className="remove-img-btn"
-            onClick={() => removeImage(index)}
-            title="Remove image"
-          >
-            ✕
-          </button>
+            
+            <button
+              type="button"
+              className="remove-img-btn"
+              onClick={() => removeImage(index)}
+              title="Remove image"
+            >
+              ✕
+            </button>
+          </div>
           
           {index === 0 && <span className="primary-badge">Primary</span>}
         </div>

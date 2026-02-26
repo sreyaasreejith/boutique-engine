@@ -1,4 +1,4 @@
-/* ====================================
+﻿/* ====================================
    GOOGLE FONTS - PREMIUM
 ==================================== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
@@ -458,25 +458,31 @@ h1, h2, h3 {
 
 .image-indicators {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex: 1;
   justify-content: center;
+  align-items: center;
 }
 
 .indicator {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+  width: 3px;
+  height: 6px;
+  border-radius: 2px;
   background: rgba(212, 175, 116, 0.4);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
+.indicator:hover {
+  height: 8px;
+  background: rgba(212, 175, 116, 0.6);
+}
+
 .indicator.active {
+  height: 10px;
   background: #8b6f47;
-  width: 14px;
-  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(139, 111, 71, 0.3);
 }
 
 /* =========================
@@ -1271,8 +1277,7 @@ h1, h2, h3 {
   display: flex;
   gap: 15px;
   margin-top: 25px;
-  flex-wrap: nowrap;
-  align-items: center;
+  flex-wrap: wrap;
 }
 
 /* Base circular style */
@@ -1516,21 +1521,19 @@ h1, h2, h3 {
   .visit-actions {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     margin-top: 28px;
     flex-wrap: nowrap;
     align-items: center;
-    flex-shrink: 0;
   }
 
   .visit-icon {
-    width: 45px;
-    height: 45px;
-    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
   }
 
   .visit-icon svg {
-    width: 18px;
+    width: 20px;
     height: 20px;
   }
 
@@ -2048,16 +2051,20 @@ h1, h2, h3 {
   }
 
   .image-indicators {
-    gap: 6px;
+    gap: 8px;
   }
 
   .indicator {
-    width: 6px;
-    height: 6px;
+    width: 3px;
+    height: 5px;
+  }
+
+  .indicator:hover {
+    height: 7px;
   }
 
   .indicator.active {
-    width: 20px;
+    height: 9px;
   }
 
   .modal-info {
@@ -2066,12 +2073,11 @@ h1, h2, h3 {
   }
 
   .visit-actions {
-    flex-wrap: nowrap;
-    gap: 8px;
+    flex-direction: column;
   }
 
   .visit-btn {
-    width: auto;
+    width: 100%;
   }
 
   .visit-map iframe {
