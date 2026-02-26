@@ -4,8 +4,9 @@ import { ShoppingBagIcon } from "../icons/Icons";
 function ProductCard({ product, onClick }) {
 
   // format price Indian style
-  const formattedPrice =
-    Number(product.price).toLocaleString("en-IN");
+  const formattedPrice = Number(product.price).toLocaleString("en-IN");
+  const formattedDiscountPrice = product.discountPrice ? Number(product.discountPrice).toLocaleString("en-IN") : null;
+  const discountPercent = product.discountPrice ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0;
 
   return (
     <div
@@ -17,12 +18,9 @@ function ProductCard({ product, onClick }) {
           src={product.image}
           alt={product.name}
         />
-        <div className="product-overlay">
-          <button className="product-quick-view">
-            <ShoppingBagIcon size={20} color="white" />
-            Quick View
-          </button>
-        </div>
+        {discountPercent > 0 && (
+          <div className="discount-badge">{discountPercent}% OFF</div>
+        )}
       </div>
 
       <div className="product-body">
@@ -35,10 +33,18 @@ function ProductCard({ product, onClick }) {
           {product.name}
         </h3>
 
-        {/* ✅ Rupee Symbol - Premium Price Display */}
-        <p className="product-price">
-          ₹ {formattedPrice}
-        </p>
+        {/* Price Display with Discount */}
+        <div className="product-pricing">
+          {formattedDiscountPrice ? (
+            <>
+              <p className="product-price">₹ {formattedDiscountPrice}</p>
+              <p className="product-price-original">₹ {formattedPrice}</p>
+              <span className="product-discount-percent">-{discountPercent}%</span>
+            </>
+          ) : (
+            <p className="product-price">₹ {formattedPrice}</p>
+          )}
+        </div>
 
         <button
           className="product-btn"

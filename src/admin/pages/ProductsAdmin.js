@@ -37,13 +37,14 @@ const [toast, setToast] = useState({
   type: "success"
 });
 
-const [form,setForm]=useState({
-name:"",
-price:"",
-category:"",
-image:"",
-images:[]
-});
+const [form, setForm] = useState({
+    name: "",
+    price: "",
+    discountPrice: "",
+    category: "",
+    image: "",
+    images: []
+  });
 
 
 // =====================
@@ -227,24 +228,28 @@ const handleDrop = (e, toIndex) => {
 
 const saveProduct = async()=>{
 
-if(!form.name || !form.image){
+if(!form.name || !form.price || !form.image){
 
 setModalState({
 isOpen: true,
 type: "error",
-message: "Please fill all required fields (Name & Image)"
+message: "Name, Price & Image are required."
 });
 return;
 
 }
 
+const cleanedForm = {
+...form,
+discountPrice: form.discountPrice || ""
+};
 
 // UPDATE
 if(editId){
 
 await updateDoc(
 doc(db,"products",editId),
-form
+cleanedForm
 );
 
 setModalState({
@@ -259,7 +264,7 @@ setEditId(null);
 
 await addDoc(
 collection(db,"products"),
-form
+cleanedForm
 );
 
 setModalState({
@@ -273,6 +278,7 @@ message: "Product Added Successfully ✅"
 setForm({
 name:"",
 price:"",
+discountPrice:"",
 category:"",
 image:"",
 images:[]
@@ -295,6 +301,7 @@ setForm({
 
 name:product.name,
 price:product.price,
+discountPrice:product.discountPrice || "",
 category:product.category,
 image:product.image,
 images: product.images || (product.image ? [product.image] : [])
@@ -365,6 +372,17 @@ placeholder="Price"
 value={form.price}
 onChange={e=>
 setForm({...form,price:e.target.value})
+}
+/>
+
+<input
+type="number"
+step="0.01"
+min="0"
+placeholder="Discount Price (Optional)"
+value={form.discountPrice}
+onChange={e=>
+setForm({...form,discountPrice:e.target.value})
 }
 />
 
@@ -493,6 +511,7 @@ setEditId(null);
 setForm({
 name:"",
 price:"",
+discountPrice:"",
 category:"",
 image:"",
 images:[]
@@ -541,7 +560,17 @@ className="admin-card"
 
 <p>{p.category}</p>
 
+<div className="admin-pricing">
+{p.discountPrice ? (
+<>
+<p className="discount-price">₹ {p.discountPrice}</p>
+<p className="original-price">₹ {p.price}</p>
+<span className="discount-percent">-{Math.round(((p.price - p.discountPrice) / p.price) * 100)}%</span>
+</>
+) : (
 <p>₹ {p.price}</p>
+)}
+</div>
 
 <div className="card-actions">
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BRAND } from "../../config/brand";
-import { CloseIcon, WhatsAppIcon, CheckIcon } from "../icons/Icons";
+import { CloseIcon, WhatsAppIcon } from "../icons/Icons";
 import { db } from "../../firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -47,20 +47,14 @@ function ProductModal({ product, onClose }) {
   const displayProduct = productDetails || product;
   const productURL = `${window.location.origin}/?product=${displayProduct.id}`;
 
-  const message = `Hello,\n\nI'm interested in:\n\nProduct: ${displayProduct.name}\nCategory: ${displayProduct.category}\nPrice: ₹${displayProduct.price}\n\nView product: ${productURL}\n\nPlease share more details.`;
-
-  const whatsappURL = `https://wa.me/${BRAND.phone}?text=${encodeURIComponent(message)}`;
-
   // Format price in Indian style
   const formattedPrice = Number(displayProduct.price).toLocaleString("en-IN");
+  const formattedDiscountPrice = displayProduct.discountPrice ? Number(displayProduct.discountPrice).toLocaleString("en-IN") : null;
+  const discountPercent = displayProduct.discountPrice ? Math.round(((displayProduct.price - displayProduct.discountPrice) / displayProduct.price) * 100) : 0;
 
-  // Get features from Firebase, or use defaults
-  const features = displayProduct.features || [
-    "Premium Quality Fabric",
-    "Exquisite Design",
-    "Perfect For Celebrations",
-    "Customization Available"
-  ];
+  const message = `Hello,\n\nI'm interested in:\n\nProduct: ${displayProduct.name}\nCategory: ${displayProduct.category}\nPrice: ₹${formattedDiscountPrice || formattedPrice}\n\nView product: ${productURL}\n\nPlease share more details.`;
+
+  const whatsappURL = `https://wa.me/${BRAND.phone}?text=${encodeURIComponent(message)}`;
 
   // Get description from Firebase, or use default
   const description = displayProduct.description || 
@@ -121,24 +115,20 @@ function ProductModal({ product, onClose }) {
             <div className="modal-category">{displayProduct.category}</div>
             <h2>{displayProduct.name}</h2>
             
-            <div className="modal-price">₹{formattedPrice}</div>
+            <div className="modal-pricing">
+              {formattedDiscountPrice ? (
+                <>
+                  <span className="modal-price">₹{formattedDiscountPrice}</span>
+                  <span className="modal-price-original">₹{formattedPrice}</span>
+                  <span className="modal-discount-label">-{discountPercent}%</span>
+                </>
+              ) : (
+                <div className="modal-price">₹{formattedPrice}</div>
+              )}
+            </div>
 
             {description && (
               <p className="modal-description">{description}</p>
-            )}
-
-            {features && features.length > 0 && (
-              <div className="modal-features">
-                <h4>Features</h4>
-                <ul>
-                  {features.map((feature, index) => (
-                    <li key={index}>
-                      <CheckIcon size={16} />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
             )}
 
             <a

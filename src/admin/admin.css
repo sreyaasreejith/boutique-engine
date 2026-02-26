@@ -342,6 +342,42 @@ TESTIMONIAL CARD
   line-height: 1.6;
 }
 
+/* Admin Pricing with Discount */
+.admin-pricing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.admin-pricing .original-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 13px;
+  margin: 0;
+}
+
+.admin-pricing .discount-price {
+  color: #1a1a2e;
+  font-weight: 700;
+  font-size: 15px;
+  margin: 0;
+}
+
+.admin-pricing .discount-percent {
+  color: #22c55e;
+  font-weight: 700;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.admin-pricing p {
+  color: #1a1a2e;
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0;
+}
+
 /* =========================
 UPLOAD
 ========================= */
