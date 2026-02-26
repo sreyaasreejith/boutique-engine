@@ -10,18 +10,9 @@ function Footer() {
         </div>
 
         <div>
+          <p>{BRAND.phone}</p>
           <p>{BRAND.address}</p>
           <p>{BRAND.email}</p>
-        </div>
-
-        <div>
-          <a
-            href={`https://wa.me/${BRAND.phone}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp
-          </a>
         </div>
       </div>
 

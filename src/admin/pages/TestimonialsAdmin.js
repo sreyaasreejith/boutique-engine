@@ -12,8 +12,6 @@ import {
 
 function TestimonialsAdmin() {
 
-  const testimonialsRef = collection(db, "testimonials");
-
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,15 +31,21 @@ function TestimonialsAdmin() {
   // FETCH
   // --------------------
   const fetchTestimonials = useCallback(async () => {
-    setLoading(true);
-    const snapshot = await getDocs(testimonialsRef);
-    const data = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    setTestimonials(data);
-    setLoading(false);
-  }, [testimonialsRef]);
+    try {
+      setLoading(true);
+      const testimonialsRef = collection(db, "testimonials");
+      const snapshot = await getDocs(testimonialsRef);
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setTestimonials(data);
+    } catch (error) {
+      console.error("Error fetching testimonials:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchTestimonials();
@@ -60,7 +64,7 @@ function TestimonialsAdmin() {
       return;
     }
 
-    await addDoc(testimonialsRef, form);
+    await addDoc(collection(db, "testimonials"), form);
     setForm({ name: "", text: "" });
     fetchTestimonials();
     setModalState({
@@ -105,9 +109,18 @@ function TestimonialsAdmin() {
           onChange={(e) => setForm({ ...form, text: e.target.value })}
         />
 
-        <button onClick={addTestimonial}>
-          Add Testimonial
-        </button>
+        <div className="form-actions">
+          <button onClick={addTestimonial}>
+            Add Testimonial
+          </button>
+
+          <button
+            className="cancel-btn"
+            onClick={() => setForm({ name: "", text: "" })}
+          >
+            Cancel
+          </button>
+        </div>
       </div>
 
       {loading ? (

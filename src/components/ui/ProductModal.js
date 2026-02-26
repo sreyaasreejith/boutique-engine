@@ -6,11 +6,16 @@ import { doc, getDoc } from "firebase/firestore";
 
 function ProductModal({ product, onClose }) {
   const [productDetails, setProductDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   // Fetch full product details from Firebase
   useEffect(() => {
     if (!product) return;
+    
+    setLoading(true);
+    setProductDetails(null);
+    setSelectedImageIndex(0);
     
     const fetchProductDetails = async () => {
       try {
@@ -34,10 +39,10 @@ function ProductModal({ product, onClose }) {
     };
 
     fetchProductDetails();
-  }, [product]);
+  }, [product?.id]);
 
   if (!product) return null;
-  if (loading) return null;
+  if (loading || !productDetails) return null;
 
   const displayProduct = productDetails || product;
   const productURL = `${window.location.origin}/?product=${displayProduct.id}`;
@@ -61,6 +66,15 @@ function ProductModal({ product, onClose }) {
   const description = displayProduct.description || 
     "Crafted with meticulous attention to detail, this piece represents the epitome of elegance and sophistication. Perfect for your most cherished moments.";
 
+  // Get all images - support both single image and multiple images
+  const images = displayProduct.images && Array.isArray(displayProduct.images) && displayProduct.images.length > 0
+    ? displayProduct.images
+    : displayProduct.image 
+    ? [displayProduct.image]
+    : [];
+
+  const currentImage = images[selectedImageIndex] || displayProduct.image;
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -70,7 +84,37 @@ function ProductModal({ product, onClose }) {
 
         <div className="modal-grid">
           <div className="modal-image-container">
-            <img src={displayProduct.image} alt={displayProduct.name} />
+            <img src={currentImage} alt={displayProduct.name} />
+            
+            {/* Image Gallery Navigation */}
+            {images.length > 1 && (
+              <div className="image-gallery">
+                <button 
+                  className="gallery-btn prev-btn"
+                  onClick={() => setSelectedImageIndex((prev) => prev === 0 ? images.length - 1 : prev - 1)}
+                  aria-label="Previous image"
+                >
+                  ❮
+                </button>
+                <div className="image-indicators">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`indicator ${index === selectedImageIndex ? 'active' : ''}`}
+                      onClick={() => setSelectedImageIndex(index)}
+                      aria-label={`View image ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                <button 
+                  className="gallery-btn next-btn"
+                  onClick={() => setSelectedImageIndex((prev) => prev === images.length - 1 ? 0 : prev + 1)}
+                  aria-label="Next image"
+                >
+                  ❯
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="modal-info">

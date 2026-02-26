@@ -223,11 +223,11 @@ h1, h2, h3 {
 }
 
 .hero-image-wrapper {
-  width: 420px;
+  width: min(420px, 100%);
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: 50% / 40%;
-  margin-left: auto;
+  margin: 0 auto;
   box-shadow: 0 30px 60px rgba(0,0,0,0.08);
 }
 
@@ -238,7 +238,7 @@ h1, h2, h3 {
 }
 
 /* =========================
-   PRODUCTS (Compact 3-Column)
+   PRODUCTS (2-Column)
 ========================= */
 
 .product-grid {
@@ -262,10 +262,10 @@ h1, h2, h3 {
   border-color: #d4a574;
 }
 
-/* Smaller image */
+/* Product image */
 .product-image {
   width: 100%;
-  height: 300px;        /* 🔥 reduced height */
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: 14px;
   background: #ebe5dd;
@@ -329,6 +329,7 @@ h1, h2, h3 {
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  padding: 20px;
 }
 
 .modal-content {
@@ -339,6 +340,8 @@ h1, h2, h3 {
   border-radius: 28px;
   position: relative;
   animation: scaleIn 0.3s ease;
+  border: 1px solid rgba(212, 175, 116, 0.2);
+  box-shadow: 0 25px 60px rgba(98, 77, 61, 0.15);
 }
 
 @keyframes scaleIn {
@@ -350,17 +353,20 @@ h1, h2, h3 {
   position: absolute;
   top: 20px;
   right: 30px;
-  font-size: 28px;
+  font-size: 30px;
   background: none;
   border: none;
   cursor: pointer;
+  color: white;
+  font-weight: 900;
+  transition: all 0.2s ease;
 }
 
 .modal-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 50px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .modal-grid img {
@@ -368,39 +374,109 @@ h1, h2, h3 {
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 22px;
+  box-shadow: 0 15px 40px rgba(98, 77, 61, 0.12);
 }
 
 .modal-info h2 {
   font-size: 28px;
   margin-bottom: 10px;
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 .modal-category {
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: #a89484;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .modal-price {
   margin: 16px 0 24px;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 18px;
+  color: #8b6f47;
 }
 
 /* WhatsApp Button */
 .whatsapp-btn {
   padding: 14px 28px;
   border-radius: 50px;
-  background: #25D366;
+  background: linear-gradient(135deg, #25D366, #20BA5A);
   color: white;
   text-decoration: none;
   display: inline-block;
-  font-weight: 500;
-  transition: 0.3s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+  border: none;
+  cursor: pointer;
 }
 
 .whatsapp-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.35);
+}
+
+/* =========================
+   IMAGE GALLERY
+========================= */
+.modal-image-container {
+  position: relative;
+}
+
+.image-gallery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.gallery-btn {
+  background: rgba(212, 175, 116, 0.15);
+  border: 1px solid rgba(212, 175, 116, 0.3);
+  color: #8b6f47;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.gallery-btn:hover {
+  background: rgba(212, 175, 116, 0.3);
+  color: #5d4a2f;
+}
+
+.image-indicators {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.indicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(212, 175, 116, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background: #8b6f47;
+  width: 14px;
+  border-radius: 2px;
 }
 
 /* =========================
@@ -612,9 +688,38 @@ h1, h2, h3 {
 .footer {
   padding: 80px 0;
   border-top: 1px solid #e8e2db;
-  text-align: center;
   font-size: 14px;
   color: #a89484;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.footer-grid div {
+  line-height: 1.8;
+}
+
+.footer-grid h3 {
+  color: #3d3d3d;
+  font-size: 18px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.footer-grid p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(232, 226, 219, 0.5);
 }
 
 /* =========================
@@ -683,9 +788,23 @@ h1, h2, h3 {
   .studio-features {
     gap: 30px;
   }
+
+  .hero-image-wrapper {
+    width: min(360px, 100%);
+  }
 }
 
 @media (max-width: 600px) {
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .footer-grid h3 {
+    font-size: 16px;
+  }
 
   .studio-section {
     padding: 60px 6%;
@@ -744,8 +863,8 @@ h1, h2, h3 {
   }
 
   .hero-image-wrapper {
-    width: 300px;
-    height: 380px;
+    width: min(300px, 90%);
+    aspect-ratio: 4 / 5;
     margin: 0 auto;
     border-radius: 45% / 35%;
     box-shadow: 0 20px 40px rgba(0,0,0,0.12);
@@ -787,7 +906,7 @@ h1, h2, h3 {
   left: 0;
   width: 320px;
   height: 100vh;
-  background: #fefbf8;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 60px 40px;
   box-shadow: 8px 0 40px rgba(98,77,61,0.15);
   animation: slideIn 0.3s ease forwards;
@@ -811,6 +930,14 @@ h1, h2, h3 {
   background: none;
   border: none;
   cursor: pointer;
+  color: white;
+  font-weight: 900;
+  transition: all 0.2s ease;
+}
+
+.menu-close:hover {
+  transform: scale(1.2);
+  opacity: 0.8;
 }
 
 .side-menu ul {
@@ -823,13 +950,30 @@ h1, h2, h3 {
   font-size: 22px;
   margin-bottom: 28px;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
+  color: #f5f1ed;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-left: 16px;
+}
+
+.side-menu li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  color: #d4a574;
 }
 
 .side-menu li:hover {
   transform: translateX(6px);
-  opacity: 0.7;
   color: #d4a574;
+}
+
+.side-menu li:hover::before {
+  opacity: 1;
 }
 
 /* =========================
@@ -1401,7 +1545,7 @@ h1, h2, h3 {
 
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+    gap: 16px;
   }
 
   .product-card {
@@ -1409,9 +1553,8 @@ h1, h2, h3 {
   }
 
   .product-image {
-    height: auto;
-    aspect-ratio: 1/1;  
-    }
+    aspect-ratio: 4 / 5;
+  }
 
   .product-name {
     font-size: 14px;
@@ -1744,19 +1887,34 @@ h1, h2, h3 {
 ==================================== */
 
 .side-menu {
-  background: white;
-  box-shadow: 12px 0 50px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  box-shadow: 12px 0 50px rgba(0, 0, 0, 0.3);
 }
 
 .side-menu li {
   font-weight: 600;
-  color: #1a1a1a;
+  color: #f5f1ed;
   transition: all 0.3s ease;
+  position: relative;
+  padding-left: 16px;
+}
+
+.side-menu li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  color: #d4a574;
 }
 
 .side-menu li:hover {
   transform: translateX(8px);
-  color: #d4af37;
+  color: #d4a574;
+}
+
+.side-menu li:hover::before {
+  opacity: 1;
 }
 
 /* ====================================
@@ -1859,6 +2017,51 @@ h1, h2, h3 {
     font-size: 28px;
   }
 
+  .modal-content {
+    max-width: 520px;
+    padding: 0;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .modal-grid img {
+    border-radius: 24px 24px 0 0;
+    max-height: 420px;
+  }
+
+  .image-gallery {
+    gap: 8px;
+  }
+
+  .gallery-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .image-indicators {
+    gap: 6px;
+  }
+
+  .indicator {
+    width: 6px;
+    height: 6px;
+  }
+
+  .indicator.active {
+    width: 20px;
+  }
+
+  .modal-info {
+    padding: 28px 24px;
+    background: white;
+  }
+
   .visit-actions {
     flex-direction: column;
   }
@@ -1874,12 +2077,12 @@ h1, h2, h3 {
 
 @media (max-width: 600px) {
   .product-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .product-image {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 4 / 5;
   }
 
   .product-card {
@@ -1905,18 +2108,84 @@ h1, h2, h3 {
     font-size: 12px;
   }
 
+  .modal-content {
+    width: 92%;
+    max-width: 440px;
+    padding: 0;
+    border-radius: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
   .modal-grid {
-    gap: 16px;
-    padding: 24px 16px;
+    grid-template-columns: 1fr;
+    gap: 0;
+    align-items: stretch;
+    justify-items: stretch;
+  }
+
+  .modal-grid img {
+    border-radius: 20px 20px 0 0;
+    aspect-ratio: 3.5 / 5;
+    width: 100%;
+    height: auto;
+    max-width: none;
+  }
+
+  .modal-info {
+    padding: 24px 20px 20px;
+    background: #fefbf8;
+    border-radius: 0 0 20px 20px;
   }
 
   .modal-close {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
+    font-size: 26px;
+    top: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    color: white;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .modal-close:hover {
+    background: white;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
   }
 
   .modal-info h2 {
-    font-size: 24px;
+    font-size: 22px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .modal-category {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .modal-price {
+    margin: 12px 0 18px;
+    font-size: 16px;
+  }
+
+  .whatsapp-btn {
+    width: 100%;
+    padding: 14px 24px;
+    text-align: center;
+  }
+    margin-bottom: 12px;
   }
 
   .whatsapp-btn {
@@ -1927,11 +2196,12 @@ h1, h2, h3 {
   .testimonial-card {
     padding: 24px;
   }
-}
+
 
 @media (max-width: 480px) {
   .product-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .modal-info h2 {

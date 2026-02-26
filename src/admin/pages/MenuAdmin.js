@@ -135,9 +135,18 @@ setName(e.target.value)
 }
 />
 
+<div className="form-actions">
 <button onClick={addCategory}>
 Add Category
 </button>
+
+<button
+className="cancel-btn"
+onClick={() => setName("")}
+>
+Cancel
+</button>
+</div>
 
 </div>
 

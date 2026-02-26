@@ -35,7 +35,8 @@ const [form,setForm]=useState({
 name:"",
 price:"",
 category:"",
-image:""
+image:"",
+images:[]
 });
 
 
@@ -100,13 +101,96 @@ setUploading(true);
 const url =
 await uploadImage(file,setProgress);
 
+// Set as primary image
 setForm(prev=>({
 ...prev,
-image:url
+image:url,
+images: [...(prev.images || []), url]
 }));
 
 setUploading(false);
 
+};
+
+// =====================
+// REMOVE IMAGE FROM GALLERY
+// =====================
+
+const removeImage = (indexToRemove) => {
+  setForm(prev => {
+    const newImages = prev.images.filter((_, index) => index !== indexToRemove);
+    return {
+      ...prev,
+      images: newImages,
+      image: indexToRemove === 0 && newImages.length > 0 ? newImages[0] : prev.image
+    };
+  });
+};
+
+// =====================
+// SET IMAGE AS PRIMARY
+// =====================
+
+const setAsPrimary = (indexToSet) => {
+  setForm(prev => {
+    const newImages = [...prev.images];
+    const primaryImage = newImages[indexToSet];
+    
+    // Move selected image to the front
+    newImages.splice(indexToSet, 1);
+    newImages.unshift(primaryImage);
+    
+    return {
+      ...prev,
+      images: newImages,
+      image: primaryImage
+    };
+  });
+};
+
+// =====================
+// HANDLE DRAG START
+// =====================
+
+const handleDragStart = (e, index) => {
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("fromIndex", index);
+};
+
+// =====================
+// HANDLE DRAG OVER
+// =====================
+
+const handleDragOver = (e) => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = "move";
+};
+
+// =====================
+// HANDLE DROP
+// =====================
+
+const handleDrop = (e, toIndex) => {
+  e.preventDefault();
+  const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"));
+  
+  if (fromIndex === toIndex) return;
+  
+  setForm(prev => {
+    const newImages = [...prev.images];
+    const draggedImage = newImages[fromIndex];
+    
+    // Remove from old position
+    newImages.splice(fromIndex, 1);
+    // Insert at new position
+    newImages.splice(toIndex, 0, draggedImage);
+    
+    return {
+      ...prev,
+      images: newImages,
+      image: newImages[0] // Keep first as primary
+    };
+  });
 };
 
 
@@ -163,7 +247,8 @@ setForm({
 name:"",
 price:"",
 category:"",
-image:""
+image:"",
+images:[]
 });
 
 fetchProducts();
@@ -184,7 +269,8 @@ setForm({
 name:product.name,
 price:product.price,
 category:product.category,
-image:product.image
+image:product.image,
+images: product.images || (product.image ? [product.image] : [])
 
 });
 
@@ -239,6 +325,9 @@ setForm({...form,name:e.target.value})
 />
 
 <input
+type="number"
+step="0.01"
+min="0"
 placeholder="Price"
 value={form.price}
 onChange={e=>
@@ -281,22 +370,67 @@ Select Category
 <input
 type="file"
 accept="image/*"
-capture="environment"
 hidden
 onChange={handleUpload}
 />
 
-</label>
+</label> 
 
 
 {form.image &&(
 
-<img
-src={form.image}
-className="preview"
-alt=""
-/>
+<div className="image-preview-section">
+  <h4>Primary Image</h4>
+  <img
+    src={form.image}
+    className="preview"
+    alt="primary"
+  />
+</div>
 
+)}
+
+{/* Image Gallery Preview */}
+{form.images.length > 0 && (
+  <div className="image-gallery-preview">
+    <h4>Uploaded Images ({form.images.length}) - Drag to reorder</h4>
+    <div className="gallery-grid">
+      {form.images.map((imgUrl, index) => (
+        <div 
+          key={index} 
+          className="gallery-item"
+          draggable
+          onDragStart={(e) => handleDragStart(e, index)}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, index)}
+        >
+          <img src={imgUrl} alt={`Product ${index + 1}`} />
+          
+          {index !== 0 && (
+            <button
+              type="button"
+              className="set-primary-btn"
+              onClick={() => setAsPrimary(index)}
+              title="Set as primary image"
+            >
+              ★
+            </button>
+          )}
+          
+          <button
+            type="button"
+            className="remove-img-btn"
+            onClick={() => removeImage(index)}
+            title="Remove image"
+          >
+            ✕
+          </button>
+          
+          {index === 0 && <span className="primary-badge">Primary</span>}
+        </div>
+      ))}
+    </div>
+  </div>
 )}
 
 
@@ -316,9 +450,6 @@ onClick={saveProduct}
 
 </button>
 
-
-{editId &&(
-
 <button
 className="cancel-btn"
 onClick={()=>{
@@ -329,15 +460,14 @@ setForm({
 name:"",
 price:"",
 category:"",
-image:""
+image:"",
+images:[]
 });
 
 }}
 >
-Cancel
+Clear Form
 </button>
-
-)}
 
 </div>
 
