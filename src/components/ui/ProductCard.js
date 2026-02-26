@@ -1,5 +1,4 @@
 import React from "react";
-import { ShoppingBagIcon } from "../icons/Icons";
 
 function ProductCard({ product, onClick }) {
 
