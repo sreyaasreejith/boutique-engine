@@ -41,8 +41,6 @@ const [form,setForm]=useState({
 name:"",
 price:"",
 category:"",
-description:"",
-features:[],
 image:"",
 images:[]
 });
@@ -276,8 +274,6 @@ setForm({
 name:"",
 price:"",
 category:"",
-description:"",
-features:[],
 image:"",
 images:[]
 });
@@ -300,8 +296,6 @@ setForm({
 name:product.name,
 price:product.price,
 category:product.category,
-description:product.description || "",
-features:product.features || [],
 image:product.image,
 images: product.images || (product.image ? [product.image] : [])
 

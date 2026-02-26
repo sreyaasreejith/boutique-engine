@@ -1694,22 +1694,49 @@ h1, h2, h3 {
 
 .modal-features {
   margin: 28px 0;
+  padding: 16px 0;
+  border-top: 1px solid rgba(212, 175, 116, 0.1);
 }
 
 .modal-features h4 {
   font-size: 14px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #1a1a1a;
 }
 
+.modal-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-features li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
 .modal-features li::before {
   content: '✓';
-  color: #d4af37;
-  margin-right: 8px;
+  color: #22c55e;
+  margin-right: 12px;
   font-weight: bold;
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.modal-description {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 20px;
 }
 
 /* ====================================
@@ -2194,7 +2221,6 @@ h1, h2, h3 {
     width: 100%;
     padding: 14px 24px;
     text-align: center;
-  }
     margin-bottom: 12px;
   }
 
@@ -2206,7 +2232,7 @@ h1, h2, h3 {
   .testimonial-card {
     padding: 24px;
   }
-
+}
 
 @media (max-width: 480px) {
   .product-grid {
