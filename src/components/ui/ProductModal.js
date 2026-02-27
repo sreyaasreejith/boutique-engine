@@ -56,9 +56,8 @@ function ProductModal({ product, onClose }) {
 
   const whatsappURL = `https://wa.me/${BRAND.phone}?text=${encodeURIComponent(message)}`;
 
-  // Get description from Firebase, or use default
-  const description = displayProduct.description || 
-    "Crafted with meticulous attention to detail, this piece represents the epitome of elegance and sophistication. Perfect for your most cherished moments.";
+  // Get description from Firebase
+  const description = displayProduct.description || "";
 
   // Get all images - support both single image and multiple images
   const images = displayProduct.images && Array.isArray(displayProduct.images) && displayProduct.images.length > 0

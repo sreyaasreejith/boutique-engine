@@ -34,10 +34,10 @@ export const BRAND = {
       url: ""
     },
 
-    // facebook: {
-    //   enabled: true,
-    //   url: "https://www.facebook.com/maisonelara"
-    // }
+    facebook: {
+      enabled: true,
+      url: "https://www.facebook.com/maisonelara"
+    }
 
   },
 

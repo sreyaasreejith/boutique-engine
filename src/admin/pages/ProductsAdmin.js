@@ -46,6 +46,10 @@ const [form, setForm] = useState({
     images: []
   });
 
+const [longPressIndex, setLongPressIndex] = useState(null);
+const [deleteImageConfirm, setDeleteImageConfirm] = useState(null);
+let longPressTimer = null;
+
 
 // =====================
 // FETCH PRODUCTS
@@ -108,10 +112,10 @@ setUploading(true);
 const url =
 await uploadImage(file,setProgress);
 
-// Set as primary image
+// Just add to gallery, don't set as primary
 setForm(prev=>({
 ...prev,
-image:url,
+image: prev.image || url,
 images: [...(prev.images || []), url]
 }));
 
@@ -174,6 +178,54 @@ const setAsPrimary = (indexToSet) => {
       image: primaryImage
     };
   });
+};
+
+// =====================
+// LONG PRESS HANDLERS
+// =====================
+
+const handleImageMouseDown = (index) => {
+  longPressTimer = setTimeout(() => {
+    setLongPressIndex(index);
+  }, 500); // 500ms long press
+};
+
+const handleImageMouseUp = () => {
+  clearTimeout(longPressTimer);
+};
+
+const handleImageTouchStart = (index) => {
+  longPressTimer = setTimeout(() => {
+    setLongPressIndex(index);
+  }, 500); // 500ms long press
+};
+
+const handleImageTouchEnd = () => {
+  clearTimeout(longPressTimer);
+};
+
+const confirmDeleteImage = (index) => {
+  // Show confirmation modal instead of deleting immediately
+  setDeleteImageConfirm(index);
+};
+
+const cancelDeleteImage = () => {
+  setLongPressIndex(null);
+  setDeleteImageConfirm(null);
+};
+
+const closeDeleteModal = () => {
+  setDeleteImageConfirm(null);
+  setLongPressIndex(null);
+};
+
+const performDeleteImage = () => {
+  if (deleteImageConfirm !== null) {
+    removeImage(deleteImageConfirm);
+    setDeleteImageConfirm(null);
+    setLongPressIndex(null);
+    showToast("Image removed ✓", "success");
+  }
 };
 
 // =====================
@@ -454,29 +506,45 @@ onChange={handleUpload}
           onDragStart={(e) => handleDragStart(e, index)}
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, index)}
+          onMouseDown={() => handleImageMouseDown(index)}
+          onMouseUp={handleImageMouseUp}
+          onMouseLeave={handleImageMouseUp}
+          onTouchStart={() => handleImageTouchStart(index)}
+          onTouchEnd={handleImageTouchEnd}
         >
           <img src={imgUrl} alt={`Product ${index + 1}`} />
           
-          <div className="gallery-actions">
-            <button
-              type="button"
-              className="set-primary-btn"
-              onClick={() => setAsPrimary(index)}
-              title={index === 0 ? "Already primary" : "Set as primary image"}
-              disabled={index === 0}
+          <button
+            type="button"
+            className={`set-primary-btn ${index === 0 ? 'primary-active' : ''}`}
+            onClick={() => setAsPrimary(index)}
+            title={index === 0 ? "This is primary" : "Set as primary image"}
+            disabled={index === 0}
+          >
+            {index === 0 ? '★' : '☆'}
+          </button>
+          
+          {longPressIndex === index && (
+            <div 
+              className="delete-overlay"
+              onClick={cancelDeleteImage}
             >
-              ★
-            </button>
-            
-            <button
-              type="button"
-              className="remove-img-btn"
-              onClick={() => removeImage(index)}
-              title="Remove image"
-            >
-              ✕
-            </button>
-          </div>
+              <div 
+                className="delete-prompt"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p>Release to delete</p>
+                <button
+                  type="button"
+                  className="remove-img-btn"
+                  onClick={() => confirmDeleteImage(index)}
+                  title="Click to confirm deletion"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
           
           {index === 0 && <span className="primary-badge">Primary</span>}
         </div>
@@ -634,6 +702,17 @@ Delete
   isDanger={true}
   onConfirm={confirmDelete}
   onCancel={() => setModalState({ ...modalState, isOpen: false })}
+/>
+
+<ConfirmModal
+  isOpen={deleteImageConfirm !== null}
+  title="Delete Image"
+  message="Are you sure you want to delete this image?"
+  confirmText="Delete"
+  cancelText="Cancel"
+  isDanger={true}
+  onConfirm={performDeleteImage}
+  onCancel={closeDeleteModal}
 />
 
 </div>

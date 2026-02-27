@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 import AdminLayout from "./AdminLayout";
 import AdminLogin from "./AdminLogin";
@@ -8,10 +9,12 @@ import MenuAdmin from "./pages/MenuAdmin";
 import TestimonialsAdmin from "./pages/TestimonialsAdmin";
 
 // Protected Route Component
-function ProtectedRoute({ children }) {
-  const isLoggedIn = localStorage.getItem("adminLogged");
+function ProtectedRoute({ children, isLoading, user }) {
+  if (isLoading) {
+    return <div style={{ padding: "20px", textAlign: "center" }}>Loading...</div>;
+  }
   
-  if (!isLoggedIn) {
+  if (!user) {
     return <Navigate to="/admin" replace />;
   }
   
@@ -19,7 +22,7 @@ function ProtectedRoute({ children }) {
 }
 
 function AdminApp() {
-  const isLoggedIn = localStorage.getItem("adminLogged");
+  const { user, loading } = useAuth();
 
   return (
     <Routes>
@@ -27,16 +30,20 @@ function AdminApp() {
       <Route
         path="/"
         element={
-          isLoggedIn
-            ? <Navigate to="products" replace />
-            : <AdminLogin />
+          loading ? (
+            <div style={{ padding: "20px", textAlign: "center" }}>Loading...</div>
+          ) : user ? (
+            <Navigate to="products" replace />
+          ) : (
+            <AdminLogin />
+          )
         }
       />
 
       {/* ADMIN PANEL */}
       <Route
         element={
-          <ProtectedRoute>
+          <ProtectedRoute isLoading={loading} user={user}>
             <AdminLayout />
           </ProtectedRoute>
         }
